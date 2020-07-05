@@ -1,7 +1,7 @@
 import pygame
 import math
 import os
-from config import SCREEN_HEIGHT, SCREEN_WIDTH
+from config import SCREEN_HEIGHT, SCREEN_WIDTH, BULLET_SPEED
 
 BLACK = (0, 0, 0)
 
@@ -41,10 +41,10 @@ class Bullet(pygame.sprite.Sprite):
         angle = math.atan2(y_diff, x_diff)
 
         # Taking into account the angle, calculate our change_x
-        # and change_y. Velocity is how fast the bullet travels.
-        velocity = 5
-        self.change_x = math.cos(angle) * velocity
-        self.change_y = math.sin(angle) * velocity
+        # and change_y. BULLET_SPEED is how fast the bullet travels.
+
+        self.change_x = math.cos(angle) * BULLET_SPEED
+        self.change_y = math.sin(angle) * BULLET_SPEED
 
     def update(self, walls):
         """ Move the bullet. """

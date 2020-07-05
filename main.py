@@ -43,11 +43,10 @@ def main():
     current_level_x = 0
     current_level_y = 0
 
+    font = pygame.font.Font(None, 30)
     clock = pygame.time.Clock()
 
     done = False
-
-    font = pygame.font.Font(None, 30)
 
     while not done:
 
@@ -118,7 +117,23 @@ def main():
             pygame.display.flip()
             level_changed = False
 
-        # player.move(current_level.wall_tiles)
+        # Dirty rects are all the rects that need to be updated at the end of this frame
+        dirty_rects = []
+
+        # get tiles intersecting player
+        bg_to_draw = []
+        for bg_tile in current_level.bg_tiles:
+            if bg_tile.rect.colliderect(player.rect):
+                bg_to_draw.append(bg_tile)
+            for bullet in bullet_list:
+                if bg_tile.rect.colliderect(bullet.rect):
+                    bg_to_draw.append(bg_tile)
+
+        # add those tiles to dirty rects
+        dirty_rects.extend([bg_tile.rect for bg_tile in bg_to_draw])
+        dirty_rects.append(player.rect)
+
+        player.move(current_level.wall_tiles)
 
         # Changing between levels
         if player.rect.y < -TILE_WIDTH / 2 and current_level_y == 0:
@@ -131,31 +146,16 @@ def main():
             current_level_y -= 1
             player.rect.y = -TILE_WIDTH / 2 + 1
 
-        # for bullet in bullet_list:
-        #     bullet.update(current_level.wall_tiles)
+        for bullet in bullet_list:
+            bullet.update(current_level.wall_tiles)
 
         # --- Drawing ---
-
-        # Background
-        # current_level.draw_bg_tiles(screen)
-
-        dirty_rects = []
-
-        # get tiles intersecting player
-        bg_to_draw = []
-        for bg_tile in current_level.bg_tiles:
-            if bg_tile.rect.colliderect(player.rect):
-                bg_to_draw.append(bg_tile)
-
-        # add those tiles to dirty rects
-        dirty_rects.extend([bg_tile.rect for bg_tile in bg_to_draw])
-        dirty_rects.append(player.rect)
-        # move player
-        player.move(current_level.wall_tiles)
 
         # draw walls and player
         for bg_tile in bg_to_draw:
             bg_tile.draw_to_screen(screen)
+        for bullet in bullet_list:
+            screen.blit(bullet.image, bullet.rect)
         screen.blit(player.image, player.rect)
 
         # print(dirty_rects)
