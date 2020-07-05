@@ -1,8 +1,8 @@
 import pygame
 import math
 import os
+from config import SCREEN_HEIGHT, SCREEN_WIDTH
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 800
 BLACK = (0, 0, 0)
 
 
