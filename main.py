@@ -1,6 +1,7 @@
 import pygame
 import os
 
+from config import *
 from classes.player import Player
 from classes.bullet import Bullet
 from levels.level import Level
@@ -12,10 +13,6 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 PURPLE = (255, 0, 255)
-
-SCREEN_HEIGHT = 800
-SCREEN_WIDTH = 800
-TILE_WIDTH = 32
 
 
 def main():
