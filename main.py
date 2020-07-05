@@ -160,13 +160,16 @@ def main():
 
         # print(dirty_rects)
 
-        # if SHOW_FPS:
+        if SHOW_FPS:
 
-        # fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
-        # screen.blit(fps, (50, 50))
+            fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
+            fps_bg_image = pygame.Surface([32, 32])
+            fps_bg_image.fill(BLACK)
+            screen.blit(fps_bg_image, (0, 0))
+            screen.blit(fps, (0, 0))
+            dirty_rects.append(fps_bg_image.get_rect())
 
         pygame.display.update(dirty_rects)
-        # pygame.display.flip()
 
         clock.tick(60)
 
