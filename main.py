@@ -46,6 +46,8 @@ def main():
 
     done = False
 
+    font = pygame.font.Font(None, 30)
+
     while not done:
 
         # --- Event Processing ---
@@ -82,36 +84,40 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
-                    player.changespeed(-5, 0)
+                    player.changespeed(-PLAYER_SPEED, 0)
                 if event.key == pygame.K_d:
-                    player.changespeed(5, 0)
+                    player.changespeed(PLAYER_SPEED, 0)
                 if event.key == pygame.K_w:
-                    player.changespeed(0, -5)
+                    player.changespeed(0, -PLAYER_SPEED)
                 if event.key == pygame.K_s:
-                    player.changespeed(0, 5)
+                    player.changespeed(0, PLAYER_SPEED)
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
-                    player.changespeed(5, 0)
+                    player.changespeed(PLAYER_SPEED, 0)
                 if event.key == pygame.K_d:
-                    player.changespeed(-5, 0)
+                    player.changespeed(-PLAYER_SPEED, 0)
                 if event.key == pygame.K_w:
-                    player.changespeed(0, 5)
+                    player.changespeed(0, PLAYER_SPEED)
                 if event.key == pygame.K_s:
-                    player.changespeed(0, -5)
+                    player.changespeed(0, -PLAYER_SPEED)
 
         # --- Game Logic ---
 
         if level_changed:
             if current_level_x == 0 and current_level_y == 0:
-                print('Entering level 1')
+                # print('Entering level 1')
                 current_level = Level(1)
             else:
-                print('Entering level 2')
+                # print('Entering level 2')
                 current_level = Level(2)
+
+            current_level.draw_bg_tiles(screen)
+            current_level.draw_walls(screen)
+            pygame.display.flip()
             level_changed = False
 
-        player.move(current_level.wall_tiles)
+        # player.move(current_level.wall_tiles)
 
         # Changing between levels
         if player.rect.y < -TILE_WIDTH / 2 and current_level_y == 0:
@@ -124,23 +130,42 @@ def main():
             current_level_y -= 1
             player.rect.y = -TILE_WIDTH / 2 + 1
 
-        for bullet in bullet_list:
-            bullet.update(current_level.wall_tiles)
+        # for bullet in bullet_list:
+        #     bullet.update(current_level.wall_tiles)
 
         # --- Drawing ---
+
         # Background
-        current_level.draw_bg_tiles(screen)
+        # current_level.draw_bg_tiles(screen)
 
-        # More efficiently update parts of the screen
-        # For any moving sprite:
-        # Draw background over the sprite
-        background_to_draw_list = pygame.sprite.groupcollide(moving_sprites, current_level.bg_tiles, False, False)
-        moving_sprites.draw(screen)
-        # current_room.wall_list.draw(screen)
+        dirty_rects = []
 
-        current_level.draw_walls(screen)
+        # get tiles intersecting player
+        bg_to_draw = []
+        for bg_tile in current_level.bg_tiles:
+            if bg_tile.rect.colliderect(player.rect):
+                bg_to_draw.append(bg_tile)
 
-        pygame.display.flip()
+        # add those tiles to dirty rects
+        dirty_rects.extend([bg_tile.rect for bg_tile in bg_to_draw])
+        dirty_rects.append(player.rect)
+        # move player
+        player.move(current_level.wall_tiles)
+
+        # draw walls and player
+        for bg_tile in bg_to_draw:
+            bg_tile.draw_to_screen(screen)
+        screen.blit(player.image, player.rect)
+
+        # print(dirty_rects)
+
+        # if SHOW_FPS:
+
+        # fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
+        # screen.blit(fps, (50, 50))
+
+        pygame.display.update(dirty_rects)
+        # pygame.display.flip()
 
         clock.tick(60)
 

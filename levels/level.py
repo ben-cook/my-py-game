@@ -10,7 +10,6 @@ class Level():
     """ This class represents a level """
 
     def __init__(self, level_number):
-        """ Constructor function """
 
         self.wall_tiles = pygame.sprite.Group()
         self.bg_tiles = pygame.sprite.Group()
@@ -19,17 +18,17 @@ class Level():
             for j in range(0, 25):
                 for i in range(0, 25):
                     if level_one[j][i] == 0:
-                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-1.png'))
+                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-2.png'))
                     if level_one[j][i] == 1:
-                        self.wall_tiles.add(Tile(i * 32, j * 32, 'brick-wall.png'))
+                        self.wall_tiles.add(Tile(i * 32, j * 32, 'bg-3.png'))
 
         if level_number == 2:
             for j in range(0, 25):
                 for i in range(0, 25):
                     if level_two[j][i] == 0:
-                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-1.png'))
+                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-2.png'))
                     if level_two[j][i] == 1:
-                        self.wall_tiles.add(Tile(i * 32, j * 32, 'brick-wall.png'))
+                        self.wall_tiles.add(Tile(i * 32, j * 32, 'bg-3.png'))
 
     def draw_walls(self, screen):
         self.wall_tiles.draw(screen)

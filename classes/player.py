@@ -19,11 +19,12 @@ class Player(pygame.sprite.Sprite):
 
         # Set height, width
         # self.image = pygame.image.load(os.path.join('.\..\sprites', 'player.png')).convert()
-        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), '..\sprites', 'player.png')).convert_alpha()
+        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), '..\sprites', 'player2.png')).convert_alpha()
 
         # Make our top-left corner the passed-in location.
         self.rect = self.image.get_rect()
         self.rect.y = y
+        self.rect.x = x
 
     def changespeed(self, x, y):
         """ Change the speed of the player. Called with a keypress. """
