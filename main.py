@@ -75,7 +75,7 @@ def main():
                 mouse_y = pos[1]
 
                 # Create the bullet based on where we are, and where we want to go.
-                bullet = Bullet(player.rect.x, player.rect.y, mouse_x, mouse_y)
+                bullet = Bullet(player.rect.centerx, player.rect.centery, mouse_x, mouse_y)
 
                 # Add the bullet to the lists
                 all_sprites_list.add(bullet)
@@ -85,8 +85,10 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     player.changespeed(-PLAYER_SPEED, 0)
+                    player.set_direction('left')
                 if event.key == pygame.K_d:
                     player.changespeed(PLAYER_SPEED, 0)
+                    player.set_direction('right')
                 if event.key == pygame.K_w:
                     player.changespeed(0, -PLAYER_SPEED)
                 if event.key == pygame.K_s:

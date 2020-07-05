@@ -31,6 +31,14 @@ class Player(pygame.sprite.Sprite):
         self.change_x += x
         self.change_y += y
 
+    def set_direction(self, dir):
+        if dir == 'left':
+            self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), '..\sprites', 'player2_left.png')).convert_alpha()
+        elif dir == 'right':
+            self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), '..\sprites', 'player2.png')).convert_alpha()
+        else:
+            raise ValueError("Invalid direction:" + str(dir))
+
     def move(self, walls):
         """ Find a new position for the player """
 
