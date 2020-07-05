@@ -6,6 +6,7 @@ from classes.player import Player
 from classes.bullet import Bullet
 from levels.level import Level
 
+# Mitchell was here 5/7/2020
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
