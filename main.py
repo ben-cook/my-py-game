@@ -129,13 +129,12 @@ def main():
 
         # --- Drawing ---
         # Background
-        bg_tile = pygame.image.load(os.path.join(os.path.dirname(__file__), 'sprites', 'bg-1.png')).convert()
-        brick_tile = pygame.image.load(os.path.join(os.path.dirname(__file__), 'sprites', 'brick-wall.png')).convert()
+        current_level.draw_bg_tiles(screen)
 
-        for i in range(0, 800, 32):
-            for j in range(0, 800, 32):
-                screen.blit(bg_tile, (i, j))
-
+        # More efficiently update parts of the screen
+        # For any moving sprite:
+        # Draw background over the sprite
+        background_to_draw_list = pygame.sprite.groupcollide(moving_sprites, current_level.bg_tiles, False, False)
         moving_sprites.draw(screen)
         # current_room.wall_list.draw(screen)
 

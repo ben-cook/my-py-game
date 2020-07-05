@@ -3,6 +3,7 @@ import math
 import os
 
 from levels.levels import level_one, level_two
+from classes.tile import Tile
 
 
 class Level():
@@ -12,31 +13,26 @@ class Level():
         """ Constructor function """
 
         self.wall_tiles = pygame.sprite.Group()
+        self.bg_tiles = pygame.sprite.Group()
 
         if level_number == 1:
             for j in range(0, 25):
                 for i in range(0, 25):
+                    if level_one[j][i] == 0:
+                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-1.png'))
                     if level_one[j][i] == 1:
-                        self.wall_tiles.add(WallTile(i * 32, j * 32))
+                        self.wall_tiles.add(Tile(i * 32, j * 32, 'brick-wall.png'))
 
         if level_number == 2:
             for j in range(0, 25):
                 for i in range(0, 25):
+                    if level_two[j][i] == 0:
+                        self.bg_tiles.add(Tile(i * 32, j * 32, 'bg-1.png'))
                     if level_two[j][i] == 1:
-                        self.wall_tiles.add(WallTile(i * 32, j * 32))
+                        self.wall_tiles.add(Tile(i * 32, j * 32, 'brick-wall.png'))
 
     def draw_walls(self, screen):
         self.wall_tiles.draw(screen)
 
-
-class WallTile(pygame.sprite.Sprite):
-    """This class represents a single brick wall tile """
-
-    def __init__(self, x, y):
-        super().__init__()
-
-        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), '../sprites', 'brick-wall.png')).convert()
-
-        self.rect = self.image.get_rect()
-        self.rect.y = y
-        self.rect.x = x
+    def draw_bg_tiles(self, screen):
+        self.bg_tiles.draw(screen)
